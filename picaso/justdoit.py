@@ -39,6 +39,8 @@ import math
 import xarray as xr
 from joblib import Parallel, delayed, cpu_count
 
+from virga.virga import justdoit
+
 # #testing error tracker
 # from loguru import logger 
 __refdata__ = os.environ.get('picaso_refdata')
@@ -3058,8 +3060,7 @@ class inputs():
                  gravity_unit=u.Unit(self.inputs['planet']['gravity_unit']))#
         
         cloud_p.ptk(df =df, kz_min = kz_min, Teff = Teff, alpha_pressure = alpha_pressure)
-        out = vj.compute(cloud_p, as_dict=True,
-                          directory=directory, do_virtual=do_virtual)
+        out = justdoit.compute_yasf(cloud_p,directory=directory)
 
 
         opd, w0, g0 = out['opd_per_layer'],out['single_scattering'],out['asymmetry']
