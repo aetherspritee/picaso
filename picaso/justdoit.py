@@ -39,12 +39,15 @@ import math
 import xarray as xr
 from joblib import Parallel, delayed, cpu_count
 
-from virga.virga import justdoit
+from virga import justdoit
 
 # #testing error tracker
 # from loguru import logger 
-__refdata__ = os.environ.get('picaso_refdata')
+# __refdata__ = os.environ.get('picaso_refdata')
+__refdata__="/home/yulivee/Code/master/picaso/reference/"
 __version__ = 3.2
+os.environ.get('PYSYN_CDBS')
+pysyn_cdbs = "/home/yulivee/grp/redcat/trds/grid/"
 
 
 if not os.path.exists(__refdata__): 
@@ -56,7 +59,7 @@ else:
         warnings.warn(f"Your code version is {__version__} but your reference data version is {ref_v}. For some functionality you may experience Keyword errors. Please download the newest ref version or update your code: https://github.com/natashabatalha/picaso/tree/master/reference")
 
 
-if not os.path.exists(os.environ.get('PYSYN_CDBS')): 
+if not os.path.exists(pysyn_cdbs): 
     raise Exception("You have not downloaded the Stellar reference data. Follow the installation instructions here: https://natashabatalha.github.io/picaso/installation.html#download-and-link-pysynphot-stellar-data. If you think you have already downloaded it then you likely just need to set your environment variable. You can use `os.environ['PYSYN_CDBS']=<yourpath>` directly in python if you run the line of code before you import PICASO.")
 
 #hello peter
