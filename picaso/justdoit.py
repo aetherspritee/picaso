@@ -13,7 +13,7 @@ from .build_3d_input import regrid_xarray
 from .photochem import run_photochem
 
 
-from virga.virga import justdoit as vj
+from virga import justdoit as vj
 from scipy.interpolate import UnivariateSpline, interp1d
 from scipy import special
 from numpy import exp, sqrt,log
@@ -39,8 +39,8 @@ import math
 import xarray as xr
 from joblib import Parallel, delayed, cpu_count
 
-from virga.virga import justdoit
-from virga.virga import jdi_utils
+from virga import justdoit
+from virga import jdi_utils
 from particle_generator.particle_generator import Particle
 
 # #testing error tracker
