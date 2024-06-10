@@ -13,7 +13,7 @@ from .build_3d_input import regrid_xarray
 from .photochem import run_photochem
 
 
-from virga import justdoit as vj
+from virga.virga import justdoit as vj
 from scipy.interpolate import UnivariateSpline, interp1d
 from scipy import special
 from numpy import exp, sqrt,log
@@ -39,15 +39,17 @@ import math
 import xarray as xr
 from joblib import Parallel, delayed, cpu_count
 
-from virga import justdoit
+from virga.virga import justdoit
+from virga.virga import jdi_utils
+from particle_generator.particle_generator import Particle
 
 # #testing error tracker
 # from loguru import logger 
 # __refdata__ = os.environ.get('picaso_refdata')
-__refdata__="/home/yulivee/Code/master/picaso/reference/"
+__refdata__="/home/dsc/picaso/reference/"
 __version__ = 3.2
 os.environ.get('PYSYN_CDBS')
-pysyn_cdbs = "/home/yulivee/grp/redcat/trds/grid/"
+pysyn_cdbs = "/home/dsc/grp/redcat/trds/grid/"
 
 
 if not os.path.exists(__refdata__): 
@@ -3008,7 +3010,11 @@ class inputs():
         fsed=1, b=1, eps=1e-2, param='const', 
         mh=1, mmw=2.2, kz_min=1e5, sig=2,
         Teff=None, alpha_pressure=None, supsat=0,
-        gas_mmr=None, do_virtual=False, verbose=True): 
+        gas_mmr=None, do_virtual=False, verbose=True,
+        particle_props: Particle = Particle(),
+        mode = "MMF",
+        store_scat_props = False,
+        load_scat_props = True):
         """
         Runs virga cloud code based on the PT and Kzz profiles 
         that have been added to inptus class.
@@ -3066,13 +3072,12 @@ class inputs():
         print("#############################################")
         print("YOU NEED TO SEE THIS OTHERWISE IT AINT WORKING")
         print("#############################################")
-        out = justdoit.compute_yasf(cloud_p,directory=directory)
-
+        out = justdoit.compute_yasf(cloud_p,directory=directory, particle_props=particle_props, mode=mode, store_scat_props=store_scat_props, load_scat_props=load_scat_props)
 
         opd, w0, g0 = out['opd_per_layer'],out['single_scattering'],out['asymmetry']
         pres = out['pressure']
-        wno = 1e4/out['wave']
-        df = vj.picaso_format(opd, w0, g0, pressure = pres, wavenumber=wno)
+        wno = 1e4/out['wave_in']
+        df = jdi_utils.picaso_format(opd, w0, g0, pressure = pres, wavenumber=wno)
         #only pass through clouds 1d if clouds are one dimension 
         self.clouds(df=df)
         return out
