@@ -3063,6 +3063,9 @@ class inputs():
                  gravity_unit=u.Unit(self.inputs['planet']['gravity_unit']))#
         
         cloud_p.ptk(df =df, kz_min = kz_min, Teff = Teff, alpha_pressure = alpha_pressure)
+        print("#############################################")
+        print("YOU NEED TO SEE THIS OTHERWISE IT AINT WORKING")
+        print("#############################################")
         out = justdoit.compute_yasf(cloud_p,directory=directory)
 
 
